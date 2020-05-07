@@ -1,0 +1,25 @@
+{
+  "type": "panel",
+  "name": "Netsage MigrationMap",
+  "id": "netsage-migrationmap",
+
+  "info": {
+    "description": "Netsage MigrationMap Grafana Plugin",
+    "author": {
+      "name": "NetSage",
+      "url": "http://www.netsage.global/"
+    },
+    "keywords": ["netsage", "migrationmap", "plugin"],
+    "version": "0.0.2",
+    "updated": "2017-10-10",
+    "logos": {
+      "small": "src/images/netsage_logo.svg",
+      "large": "src/images/netsage_logo.svg"
+    }
+  },
+
+  "dependencies": {
+    "grafanaVersion": "3.x.x",
+    "plugins": [ ]
+  }
+}
