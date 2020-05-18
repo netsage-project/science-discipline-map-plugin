@@ -100,6 +100,7 @@ var LightColorPallet = [
   "#F8A824",
   "#EA1AE0"];
 var table_data = [];
+var endpoint_data = [];
 
 
 export class NetsageMigrationMap extends MetricsPanelCtrl {
@@ -126,6 +127,8 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
 
   onDataReceived(dataList) {
+    console.log("Raw data");
+    console.log(dataList);
     this.panel.parsed_data = [];
     this.panel.max_total = 0;
     this.process_data(dataList);
@@ -136,12 +139,10 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
   process_data(dataList) {
     table_data = [];
+    endpoint_data = [];
     if (dataList.length != 0) {
-      if (dataList[0].type == "table") {
-        this.process_table(dataList[0]);
-      }
+      this.process_table(dataList);
     }
-    this.render();
   }
 
   getFixedColor(i) {
@@ -184,47 +185,72 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
   }
 
   process_table(tableData) {
-    var datarows = tableData.rows;
-
 
     var filteredSet = [];
+    var endPointSet = [];
 
-    datarows.forEach(function (el) {
-      var discipline_name = el[0];
+    tableData.forEach(element => {
 
-      var newObj = {};
-      newObj.values = [];
-      newObj.name = discipline_name;
-      newObj.values.push(el);
+      var datarows = element.rows;
 
-      var found = false;
-      var filteredSetVal = 0;
-      var filteredValtoPush = [];
+      datarows.forEach(function (el) {
 
-      for (var i = 0; i < filteredSet.length; i++) {
-        if (filteredSet[i].name == discipline_name) {
-          found = true;
-          filteredSetVal = i;
+        if (true) {
+          var discipline_name = el[0];
 
+          var newObj = {};
+          newObj.values = [];
+          newObj.name = discipline_name;
+          newObj.values.push(el);
+
+          var found = false;
+          var filteredSetVal = 0;
+          var filteredValtoPush = [];
+
+          for (var i = 0; i < filteredSet.length; i++) {
+            if (filteredSet[i].name == discipline_name) {
+              found = true;
+              filteredSetVal = i;
+
+
+            }
+          }
+          if (!found) {
+            filteredSet.push(newObj);
+          } else {
+            var theone = filteredSet.find(function (e) {
+              return e.name == discipline_name;
+              console.log("reached here and did nothing");
+            })
+            filteredSet[filteredSetVal].values.push(el);
+          }
 
         }
-      }
-      if (!found) {
-        filteredSet.push(newObj);
-      } else {
-        var theone = filteredSet.find(function (e) {
-          return e.name == discipline_name;
 
-        })
-        filteredSet[filteredSetVal].values.push(el);
-      }
+        /*
+        if (el.length == 6) {
+          var endPointObj = {};
+          endPointObj.discipline_name = el[0];
+          endPointObj.orgName = el[1];
+          endPointObj.orgLat = el[2];
+          endPointObj.orgLon = el[3];
+          endPointObj.resourceName = el[4];
+          endPointObj.value = el[5];
 
-    })
+          endPointSet.push(endPointObj);
+          endpoint_data.push(endPointObj);
+        }
+        */
 
 
+      })
 
+    });
 
+    console.log("This is the filtered set");
+    console.log(filteredSet);
 
+    //need to fix filtered set because the endpoints are also added. 
 
     for (var i = 0; i < filteredSet.length; i++) {
       //need to get color for each source 
@@ -233,22 +259,41 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
       // console.log(filteredSet[i]);
       for (var j = 0; j < filteredSet[i].values.length; j++) {
 
+        
         var element = filteredSet[i].values[j];
-        var obj = {};
-        obj.name = element[0];
-        obj.from = [element[3], element[2]];
-        obj.to = [element[6], element[5]];
-        obj.labels = [element[1], element[4]];
-        obj.color = color;
-        obj.value = 1;
-        obj.valInBytes = element[7];
-        // obj.value = Math.log(element[7])
+        if(element.length > 6){
+          var obj = {};
+          obj.name = element[0];
+          obj.from = [element[4], element[3]];
+          obj.to = [element[8], element[7]];
+          obj.labels = [element[1], element[5]];
+          obj.color = color;
+          obj.value = 1;
+          obj.valInBytes = element[9];
+          obj.srcResourceName = element[2];
+          obj.destResourceName = element[6];
+          
+          console.log("Color is " + color + " with index " + i);
+          table_data.push(obj);
+        }else{
+          var obj = {};
+          obj.name = element[0];
+          obj.from = [element[3], element[2]];
+          obj.to = [element[3], element[2]];
+          obj.labels = [element[1], element[1]];
+          obj.color = color;
+          obj.value = 1;
+          obj.valInBytes = element[5];
+          obj.srcResourceName = element[4];
+          obj.destResourceName = element[4];
+          
+          console.log("Color is " + color + " with index " + i);
+          table_data.push(obj);
 
 
-        //if (obj.value != null) {
-        console.log("Color is " + color + " with index " + i);
-        table_data.push(obj);
-        // }
+        }
+       
+
 
 
       }
@@ -466,8 +511,8 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
         var legendInfo = { name: element.name, color: element.color }
         legendDivData.push(legendInfo);
-        var SrcMarkerInfo = { placeName: element.labels[0], latlong: [element.from[1], element.from[0]] };
-        var DestMarkerInfo = { placeName: element.labels[1], latlong: [element.to[1], element.to[0]] };
+        var SrcMarkerInfo = { placeName: element.labels[0], latlong: [element.from[1], element.from[0]], resourceName : element.srcResourceName };
+        var DestMarkerInfo = { placeName: element.labels[1], latlong: [element.to[1], element.to[0]], resourceName : element.destResourceName };
         markerLocations.push(SrcMarkerInfo);
         markerLocations.push(DestMarkerInfo);
 
@@ -493,7 +538,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
         // console.log("Adding Markers for : " + element.placeName + "at location : " + element.latlong);
         //var customPopup = "<h2 class = 'custom' style = 'color:" + element.color + "'> Discipline : " + element.name + " </h2></br><h3>Source : " + element.labels[0] + "</h2><br/><h3>Destination : " + element.labels[1] + " </h2></br><h3 class = 'custom'> Value : " + element.valInBytes + " Bytes </h3>"
-        var customPopup = "<h3 class='orgName'>" + element.placeName + "</h3>";
+        var customPopup = "<h3 class='orgName'>" + element.placeName +  " :  " + element.resourceName+  "</h3>";
         var customOptions =
         {
           'maxWidth': '310',
@@ -508,7 +553,8 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
 
 
-        var existsAsSource = data.filter(({ labels }) => labels[0] === element.placeName);
+        //var existsAsSource = data.filter(({ labels }) => labels[0] === element.placeName);
+        var existsAsSource = data.filter(({ srcResourceName }) => srcResourceName === element.resourceName);
 
         var sourceValue = 0.0;
         var destValue = 0.0;
@@ -523,7 +569,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
               valinGB = valinGB.toFixed(3);
               var formattedValue = this.getFormattedValue(existsAsSource[i].valInBytes);
               // outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].labels[1] + " </br> Value : " + valinGB + " GB</span></br></br>"
-              outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].labels[1] + " </br> Value : " + formattedValue + "</span></br></br>"
+              outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].labels[1] + "</br> Resource : " + existsAsSource[i].destResourceName + " </br> Value : " + formattedValue + "</span></br></br>"
 
             }
 
@@ -532,7 +578,8 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
         }
 
-        var existsAsDest = data.filter(({ labels }) => labels[1] === element.placeName);
+        //var existsAsDest = data.filter(({ labels }) => labels[1] === element.placeName);
+        var existsAsDest = data.filter(({ destResourceName }) => destResourceName === element.resourceName);
 
         if (existsAsDest.length > 0) {
           var incomingDiv = "<h5>Incoming </h5>";
@@ -545,7 +592,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
               var formattedValue = this.getFormattedValue(existsAsDest[i].valInBytes);
 
               //incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'> Discipline : " + existsAsDest[i].name + "  </br> From : " + existsAsDest[i].labels[0] + "</br>Value : " + valinGB + " GB</span></br></br>"
-              incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'> Discipline : " + existsAsDest[i].name + "  </br> From : " + existsAsDest[i].labels[0] + "</br>Value : " + formattedValue + "</span></br></br>"
+              incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'> Discipline : " + existsAsDest[i].name + "  </br> From : " + existsAsDest[i].labels[0] + "</br> Resource : " + existsAsDest[i].srcResourceName + "</br>Value : " + formattedValue + "</span></br></br>"
 
             }
 
@@ -555,10 +602,6 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
         }
 
-        // console.log("Source Marker size : " + sourceValue);
-        //console.log("Dest Marker size : " + destValue);
-
-        //create markers 
         var circle = L.circleMarker([element.latlong[0], element.latlong[1]], {
           color: "black",
           weight: 0.6,
@@ -575,6 +618,15 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           // this.closePopup();
         });
       });
+
+
+      //Add endpoints markers 
+      for (var i = 0; i < endpoint_data.length; i++) {
+        var endPointMarker = L.circleMarker([endpoint_data[i].orgLat, endpoint_data[i].orgLon], { color: "black", weight: 0.6, fillColor: "red", fillOpacity: 0.9, radius: 5 + Math.log10(endpoint_data[i].value) }).addTo(map);
+
+
+      }
+
     }
 
   }
