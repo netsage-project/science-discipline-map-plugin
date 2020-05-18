@@ -1,3 +1,3 @@
 # Netsage science discipline map plugin
-A granfana plugin for map showing science registry. 
+A grafana plugin for map showing science registry. 
 
