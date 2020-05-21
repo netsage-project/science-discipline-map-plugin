@@ -259,9 +259,9 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
       // console.log(filteredSet[i]);
       for (var j = 0; j < filteredSet[i].values.length; j++) {
 
-        
+
         var element = filteredSet[i].values[j];
-        if(element.length > 6){
+        if (element.length > 6) {
           var obj = {};
           obj.name = element[0];
           obj.from = [element[4], element[3]];
@@ -272,10 +272,10 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           obj.valInBytes = element[9];
           obj.srcResourceName = element[2];
           obj.destResourceName = element[6];
-          
+
           console.log("Color is " + color + " with index " + i);
           table_data.push(obj);
-        }else{
+        } else {
           var obj = {};
           obj.name = element[0];
           obj.from = [element[3], element[2]];
@@ -285,14 +285,15 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           obj.value = 1;
           obj.valInBytes = element[5];
           obj.srcResourceName = element[4];
-          obj.destResourceName = element[4];
-          
+          //obj.destResourceName = element[4];
+          obj.destResourceName = "UNKNOWN";
+
           console.log("Color is " + color + " with index " + i);
           table_data.push(obj);
 
 
         }
-       
+
 
 
 
@@ -511,12 +512,10 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
         var legendInfo = { name: element.name, color: element.color }
         legendDivData.push(legendInfo);
-        var SrcMarkerInfo = { placeName: element.labels[0], latlong: [element.from[1], element.from[0]], resourceName : element.srcResourceName };
-        var DestMarkerInfo = { placeName: element.labels[1], latlong: [element.to[1], element.to[0]], resourceName : element.destResourceName };
+        var SrcMarkerInfo = { placeName: element.labels[0], latlong: [element.from[1], element.from[0]] };
+        var DestMarkerInfo = { placeName: element.labels[1], latlong: [element.to[1], element.to[0]] };
         markerLocations.push(SrcMarkerInfo);
         markerLocations.push(DestMarkerInfo);
-
-
       });
 
 
@@ -535,10 +534,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
       var filteredMarkers = Array.from(new Set(markerLocations.map(JSON.stringify))).map(JSON.parse);
       //console.log(filteredMarkers);
       filteredMarkers.forEach(element => {
-
-        // console.log("Adding Markers for : " + element.placeName + "at location : " + element.latlong);
-        //var customPopup = "<h2 class = 'custom' style = 'color:" + element.color + "'> Discipline : " + element.name + " </h2></br><h3>Source : " + element.labels[0] + "</h2><br/><h3>Destination : " + element.labels[1] + " </h2></br><h3 class = 'custom'> Value : " + element.valInBytes + " Bytes </h3>"
-        var customPopup = "<h3 class='orgName'>" + element.placeName +  " :  " + element.resourceName+  "</h3>";
+        var customPopup = "<h3 class='orgName'>" + element.placeName + "</h3>";
         var customOptions =
         {
           'maxWidth': '310',
@@ -551,25 +547,37 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
         var data = table_data;
 
+        //var filteredSource = data.filter(({ labels }) => labels[0] === element.placeName);
+        //var existsAsSource = data.filter(({ srcResourceName }) => srcResourceName === element.resourceName);
+        var existsAsSource = data.filter(({ from }) => from[0] === element.latlong[1] && from[1] === element.latlong[0]);
+        // var existsAsSource = Array.from(new Set(filteredSource.map(JSON.stringify))).map(JSON.parse);
 
 
-        //var existsAsSource = data.filter(({ labels }) => labels[0] === element.placeName);
-        var existsAsSource = data.filter(({ srcResourceName }) => srcResourceName === element.resourceName);
 
         var sourceValue = 0.0;
         var destValue = 0.0;
 
         if (existsAsSource.length > 0) {
           //console.log(existsAsSource);
-          var outGoingDiv = "<h5>Outgoing </h5>";
+          var outGoingDiv = "<h5><u>Outgoing </u></h5>";
           for (var i = 0; i < existsAsSource.length; i++) {
             if (existsAsSource[i]) {
+              var destName = "";
+
+
+              if (existsAsSource[i].labels[0] === existsAsSource[i].labels[1]) {
+                destName = "UNKNOWN";
+              } else {
+                destName = existsAsSource[i].labels[1];
+              }
+
+
               var valinGB = existsAsSource[i].valInBytes / 8589934592;
               sourceValue += valinGB;
               valinGB = valinGB.toFixed(3);
               var formattedValue = this.getFormattedValue(existsAsSource[i].valInBytes);
-              // outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].labels[1] + " </br> Value : " + valinGB + " GB</span></br></br>"
-              outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].labels[1] + "</br> Resource : " + existsAsSource[i].destResourceName + " </br> Value : " + formattedValue + "</span></br></br>"
+              //outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].labels[1] + " </br> Value : " + valinGB + " GB</span></br></br>"
+              outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + destName + "</br> Resource : " + existsAsSource[i].destResourceName + " </br> Volume : " + formattedValue + "</span></br></br>"
 
             }
 
@@ -578,21 +586,29 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
         }
 
-        //var existsAsDest = data.filter(({ labels }) => labels[1] === element.placeName);
-        var existsAsDest = data.filter(({ destResourceName }) => destResourceName === element.resourceName);
+        //var filteredDest = data.filter(({ labels }) => labels[1] === element.placeName);
+        var existsAsDest = data.filter(({ to }) => to[0] === element.latlong[1] && to[1] === element.latlong[0]);
+        //var existsAsDest = data.filter(({ destResourceName }) => destResourceName === element.resourceName);
+        // var existsAsDest = Array.from(new Set(filteredDest.map(JSON.stringify))).map(JSON.parse);
 
         if (existsAsDest.length > 0) {
-          var incomingDiv = "<h5>Incoming </h5>";
+          var incomingDiv = "<h5><u>Incoming</u> </h5>";
 
           for (var i = 0; i < existsAsDest.length; i++) {
             if (existsAsDest[i]) {
-              var valinGB = existsAsDest[i].valInBytes / 8589934592;
-              destValue += valinGB;
-              valinGB = valinGB.toFixed(3);
-              var formattedValue = this.getFormattedValue(existsAsDest[i].valInBytes);
+              //need to check if its endpoint
+              if (existsAsDest[i].labels[0] === existsAsDest[i].labels[1]) {
+                //do nothing
+              } else {
+                var valinGB = existsAsDest[i].valInBytes / 8589934592;
+                destValue += valinGB;
+                valinGB = valinGB.toFixed(3);
+                var formattedValue = this.getFormattedValue(existsAsDest[i].valInBytes);
 
-              //incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'> Discipline : " + existsAsDest[i].name + "  </br> From : " + existsAsDest[i].labels[0] + "</br>Value : " + valinGB + " GB</span></br></br>"
-              incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'> Discipline : " + existsAsDest[i].name + "  </br> From : " + existsAsDest[i].labels[0] + "</br> Resource : " + existsAsDest[i].srcResourceName + "</br>Value : " + formattedValue + "</span></br></br>"
+                //incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'> Discipline : " + existsAsDest[i].name + "  </br> From : " + existsAsDest[i].labels[0] + "</br>Value : " + valinGB + " GB</span></br></br>"
+                incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'> Discipline : " + existsAsDest[i].name + "  </br> From : " + existsAsDest[i].labels[0] + "</br> Resource : " + existsAsDest[i].srcResourceName + "</br>Volume : " + formattedValue + "</span></br></br>"
+
+              }
 
             }
 
@@ -618,14 +634,6 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           // this.closePopup();
         });
       });
-
-
-      //Add endpoints markers 
-      for (var i = 0; i < endpoint_data.length; i++) {
-        var endPointMarker = L.circleMarker([endpoint_data[i].orgLat, endpoint_data[i].orgLon], { color: "black", weight: 0.6, fillColor: "red", fillOpacity: 0.9, radius: 5 + Math.log10(endpoint_data[i].value) }).addTo(map);
-
-
-      }
 
     }
 
