@@ -272,6 +272,8 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           obj.valInBytes = element[9];
           obj.srcResourceName = element[2];
           obj.destResourceName = element[6];
+          obj.destResourceDisplayName = element[6]; 
+          obj.destDisplayName = element[5]; 
 
           console.log("Color is " + color + " with index " + i);
           table_data.push(obj);
@@ -285,8 +287,9 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           obj.value = 1;
           obj.valInBytes = element[5];
           obj.srcResourceName = element[4];
-          //obj.destResourceName = element[4];
-          obj.destResourceName = "UNKNOWN";
+          obj.destResourceName = element[4];
+          obj.destResourceDisplayName = "UNKNOWN"; 
+          obj.destDisplayName = "UNKNOWN"; 
 
           console.log("Color is " + color + " with index " + i);
           table_data.push(obj);
@@ -565,11 +568,11 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
               var destName = "";
 
 
-              if (existsAsSource[i].labels[0] === existsAsSource[i].labels[1]) {
-                destName = "UNKNOWN";
-              } else {
-                destName = existsAsSource[i].labels[1];
-              }
+              // if (existsAsSource[i].labels[0] === existsAsSource[i].labels[1]) {
+              //   destName = "UNKNOWN";
+              // } else {
+              //   destName = existsAsSource[i].labels[1];
+              // }
 
 
               var valinGB = existsAsSource[i].valInBytes / 8589934592;
@@ -577,7 +580,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
               valinGB = valinGB.toFixed(3);
               var formattedValue = this.getFormattedValue(existsAsSource[i].valInBytes);
               //outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].labels[1] + " </br> Value : " + valinGB + " GB</span></br></br>"
-              outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + destName + "</br> Resource : " + existsAsSource[i].destResourceName + " </br> Volume : " + formattedValue + "</span></br></br>"
+              outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].destDisplayName + "</br> Resource : " + existsAsSource[i].destResourceDisplayName + " </br> Volume : " + formattedValue + "</span></br></br>"
 
             }
 
