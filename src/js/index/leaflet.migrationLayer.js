@@ -1,16 +1,16 @@
 ! function (t) {
     var i = {
-            calculateColor: function (t, i) {
-                if (0 === t.indexOf("#")) {
-                    var s = t.slice(1),
-                        a = parseInt(s.slice(0, 2), 16),
-                        e = parseInt(s.slice(2, 4), 16),
-                        r = parseInt(s.slice(4), 16)
-                    return "rgba(" + a + "," + e + "," + r + "," + i + ")"
-                }
-                return /^rgb\(/.test(t) ? t.replace(/rgb/, "rgba").replace(")", ",") + i + ")" : t.split(",").splice(0, 3).join(",") + i + ")"
+        calculateColor: function (t, i) {
+            if (0 === t.indexOf("#")) {
+                var s = t.slice(1),
+                    a = parseInt(s.slice(0, 2), 16),
+                    e = parseInt(s.slice(2, 4), 16),
+                    r = parseInt(s.slice(4), 16)
+                return "rgba(" + a + "," + e + "," + r + "," + i + ")"
             }
-        },
+            return /^rgb\(/.test(t) ? t.replace(/rgb/, "rgba").replace(")", ",") + i + ")" : t.split(",").splice(0, 3).join(",") + i + ")"
+        }
+    },
         s = {
             forEach: function (t, i, s) {
                 if ("function" == typeof Array.prototype.forEach) t.forEach(i, s)
@@ -97,7 +97,7 @@
                     y: 80,
                     rotation: 50 * Math.PI / 180,
                     style: "arrow",
-                  //  color: "rgb(255, 255, 255)",
+                    //  color: "rgb(255, 255, 255)",
                     color: this.strokeStyle,
                     size: 4,
                     borderWidth: 0,
@@ -111,9 +111,9 @@
                 var s = this.endAngle,
                     a = this.trailAngle + this.factor,
                     e = this.strokeStyle
-                    //change the calculate color value to change opacity of the blur. 
-                this.animateBlur  
-                && (this.arcAngle = a), this.trailAngle = a, e = i.calculateColor(e, 0), this.drawArc(t, e, this.lineWidth, this.startAngle, this.arcAngle)
+                //change the calculate color value to change opacity of the blur. 
+                this.animateBlur
+                    && (this.arcAngle = a), this.trailAngle = a, e = i.calculateColor(e, 0), this.drawArc(t, e, this.lineWidth, this.startAngle, this.arcAngle)
                 //commentedThis
                 // for (var r = this.tailPointsCount, o = 0; r > o; o++) {
                 //     var n = i.calculateColor(this.strokeStyle, .3 - .3 / r * o),
@@ -134,7 +134,7 @@
             }
             return i.prototype.init = function () {
                 this.updateData(this.data)
-            }, i.prototype.add = function (t) {}, i.prototype.remove = function () {}, i.prototype.clear = function () {
+            }, i.prototype.add = function (t) { }, i.prototype.remove = function () { }, i.prototype.clear = function () {
                 this.store = {
                     arcs: [],
                     markers: [],
@@ -144,16 +144,16 @@
             }, i.prototype.updateData = function (t) {
                 t && 0 !== t.length && (this.clear(), this.data = t, this.data && this.data.length > 0 && s.forEach(this.data, function (t) {
                     var i = new e({
-                            startX: t.from[0],
-                            startY: t.from[1],
-                            endX: t.to[0],
-                            endY: t.to[1],
-                            labels: t.labels,
-                            label: this.style.arc.label,
-                            font: this.style.arc.font,
-                            width: this.style.arc.width,
-                            color: t.color
-                        }),
+                        startX: t.from[0],
+                        startY: t.from[1],
+                        endX: t.to[0],
+                        endY: t.to[1],
+                        labels: t.labels,
+                        label: this.style.arc.label,
+                        font: this.style.arc.font,
+                        width: this.style.arc.width,
+                        color: t.color
+                    }),
                         s = new a({
                             x: t.to[0],
                             y: t.to[1],
@@ -265,7 +265,7 @@
         _bindMapEvents: function () {
             var t = this
             this._map.on("moveend", function () {
-                t.migration.play(), t._draw()
+                // t.migration.play(), t._draw()
             }), this._map.on("zoomstart ", function () {
                 t.container.style.display = "none"
             }), this._map.on("zoomend", function () {

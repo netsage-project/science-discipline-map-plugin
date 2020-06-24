@@ -37,6 +37,8 @@ const panelDefaults = {
   center_lon: 9,
   zoom_lvl: 3,
   dark_mode: false,
+  showControls: true,
+  animationPlaying: true,
   choices: [],
   array_option_1: [],
   array_option_2: [],
@@ -272,8 +274,8 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           obj.valInBytes = element[9];
           obj.srcResourceName = element[2];
           obj.destResourceName = element[6];
-          obj.destResourceDisplayName = element[6]; 
-          obj.destDisplayName = element[5]; 
+          obj.destResourceDisplayName = element[6];
+          obj.destDisplayName = element[5];
 
           console.log("Color is " + color + " with index " + i);
           table_data.push(obj);
@@ -288,8 +290,8 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           obj.valInBytes = element[5];
           obj.srcResourceName = element[4];
           obj.destResourceName = element[4];
-          obj.destResourceDisplayName = "UNKNOWN"; 
-          obj.destDisplayName = "UNKNOWN"; 
+          obj.destResourceDisplayName = "UNKNOWN";
+          obj.destDisplayName = "UNKNOWN";
 
           console.log("Color is " + color + " with index " + i);
           table_data.push(obj);
@@ -319,7 +321,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
   onInitEditMode() {
     this.addEditorTab('Options', 'public/plugins/netsage-migrationmap/editor.html', 2);
     //this.addEditorTab('Display', 'public/plugins/netsage-migrationmap/display_editor.html', 3);
-    tempArray = this.scale.displayColor(this.panel.colorScheme);
+    // tempArray = this.scale.displayColor(this.panel.colorScheme);
     this.render();
   }
 
@@ -449,14 +451,17 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
     }
 
 
-
-
-    if (migrationLayer.hasOwnProperty("canvas")) {
-      migrationLayer.destroy();
+    if(migrationLayer){
+      if (migrationLayer.hasOwnProperty("canvas")) {
+        migrationLayer.destroy();
+      }
     }
+
+
     if (document.getElementById(ctrl.migrationmap_holder_id)) {
 
       document.getElementById(ctrl.containerDivId).innerHTML = '<div id="map"><div id = "legend" >LEGEND </br> </div></div>';
+
 
 
       var map_url = "";
@@ -468,6 +473,8 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
         map_url = ctrl.panel.light_map_url;
         // console.log("Light loaded");
       }
+
+
 
       var id = document.getElementById("map");
       // var id = document.getElementById(ctrl.migrationmap_holder_id);
@@ -493,10 +500,30 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           maxWidth: 5
         });
 
+
         migrationLayer.addTo(map);
+
         migrationLayer.setData([]);
         migrationLayer.setData(table_data);
+
+        if (ctrl.panel.animationPlaying) {
+          migrationLayer.play();
+        }
+        if (!ctrl.panel.animationPlaying) {
+          setTimeout(() => {
+            migrationLayer.pause();
+          }, 3000);
+
+        }
+
+
+
+
+
+
       }
+
+
 
 
 
@@ -530,6 +557,32 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
         var lineToAdd = '<span class = "legendItem" style= "color: ' + element.color + ';">' + element.name + '</span></br>';
         legendDiv.innerHTML += lineToAdd;
       });
+
+      legendDiv.innerHTML += '<div id="controls"></div>';
+      let controlsDiv = document.getElementById("controls");
+      if (ctrl.panel.showControls) {
+        controlsDiv.innerHTML = '<br/><span>ANIMATIONS</span><br/>';
+        controlsDiv.innerHTML += '<label class="switch"><input type="checkbox" id="playPause"><span class="slider round"></span></label>'
+      }
+
+      let playPauseBtn = document.getElementById("playPause");
+
+
+      if (playPauseBtn) {
+
+        playPauseBtn.checked = ctrl.panel.animationPlaying;
+        playPauseBtn.addEventListener("change", function () {
+          if (playPauseBtn.checked) {
+            ctrl.panel.animationPlaying = true;
+            migrationLayer.play();
+          } else {
+            ctrl.panel.animationPlaying = false;
+            migrationLayer.pause();
+          }
+        })
+      }
+
+
 
 
 
@@ -566,15 +619,6 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           for (var i = 0; i < existsAsSource.length; i++) {
             if (existsAsSource[i]) {
               var destName = "";
-
-
-              // if (existsAsSource[i].labels[0] === existsAsSource[i].labels[1]) {
-              //   destName = "UNKNOWN";
-              // } else {
-              //   destName = existsAsSource[i].labels[1];
-              // }
-
-
               var valinGB = existsAsSource[i].valInBytes / 8589934592;
               sourceValue += valinGB;
               valinGB = valinGB.toFixed(3);
