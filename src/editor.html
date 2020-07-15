@@ -20,8 +20,11 @@
         <input type="number" min="0" class="gf-form-input width-4" ng-model="ctrl.panel.zoom_lvl"
             ng-change="ctrl.render()"><br />
 
-        <gf-form-switch class="gf-form" label-class="width-14" label="Dark Mode" checked="ctrl.panel.dark_mode"
+        <!-- <gf-form-switch class="gf-form" label-class="width-14" label="Dark Mode" checked="ctrl.panel.dark_mode"
             on-change="ctrl.modeChanged()">
+        </gf-form-switch> -->
+        <gf-form-switch class="gf-form" label-class="width-14" label="Show controls" checked="ctrl.panel.showControls"
+            on-change="ctrl.render()">
         </gf-form-switch>
     </div>
 </div>
