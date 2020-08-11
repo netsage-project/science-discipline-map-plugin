@@ -143,7 +143,12 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
     table_data = [];
     endpoint_data = [];
     if (dataList.length != 0) {
-      this.process_table(dataList);
+      try {
+        this.process_table(dataList);
+      } catch (error) {
+        console.error("ERROR PARSING DATA. PLEASE MAKE SURE THE DATA IS SET PROPERLY");
+      }
+
     }
   }
 
@@ -232,10 +237,6 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
       })
 
     });
-
-    console.log("This is the filtered set");
-    console.log(filteredSet);
-
     //need to fix filtered set because the endpoints are also added. 
 
     for (var i = 0; i < filteredSet.length; i++) {
@@ -304,7 +305,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
   onInitEditMode() {
     this.addEditorTab('Options', 'public/plugins/netsage-migrationmap/editor.html', 2);
-    //this.render();
+    this.render();
   }
 
 
@@ -436,7 +437,12 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
     if (migrationLayer) {
       if (migrationLayer.hasOwnProperty("canvas")) {
         if (typeof migrationLayer.destroy === 'function') {
-          migrationLayer.destroy();
+          try {
+            migrationLayer.destroy();
+          } catch (error) {
+            console.error("ERROR WHILE DESTROYING MIGRATION LAYER!!");
+          }
+
         }
       }
     }
@@ -463,6 +469,9 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
       var id = document.getElementById("map");
       // var id = document.getElementById(ctrl.migrationmap_holder_id);
       if (id) {
+
+        var container = L.DomUtil.get('map'); if (container != null) { container._leaflet_id = null; }
+
         var map = L.map('map', {
           minZoom: 2,
           scrollWheelZoom: false,
@@ -470,6 +479,31 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
         }).setView([ctrl.panel.center_lat || 35, ctrl.panel.center_lon || -95], ctrl.panel.zoom_lvl || 5);
         L.tileLayer(map_url || "https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw")
           .addTo(map);
+
+
+        map.on('zoomend', () => {
+
+          if (!ctrl.panel.animationPlaying) {
+            migrationLayer.play();
+            migrationLayer.setData(table_data);
+            migrationLayer.pause();
+          } else {
+            migrationLayer.setData(table_data);
+          }
+
+        });
+
+
+        map.on('dragend', function () {
+          //turn off auto-fit
+          if (!ctrl.panel.animationPlaying) {
+            migrationLayer.play();
+            migrationLayer.setData(table_data);
+            migrationLayer.pause();
+          } else {
+            migrationLayer.setData(table_data);
+          }
+        })
 
         // map.setMaxBounds(map.getBounds()); 
 
@@ -487,8 +521,6 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
         migrationLayer.addTo(map);
 
-        migrationLayer.setData([]);
-        migrationLayer.setData(table_data);
 
         if (ctrl.panel.animationPlaying) {
           migrationLayer.play();
@@ -499,6 +531,8 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
           }, 3000);
 
         }
+
+        migrationLayer.setData(table_data);
 
 
 
