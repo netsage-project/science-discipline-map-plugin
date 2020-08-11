@@ -470,42 +470,49 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
       // var id = document.getElementById(ctrl.migrationmap_holder_id);
       if (id) {
 
-        var container = L.DomUtil.get('map'); if (container != null) { container._leaflet_id = null; }
+        try {
+          var container = L.DomUtil.get('map'); if (container != null) { container._leaflet_id = null; }
 
-        var map = L.map('map', {
-          minZoom: 2,
-          scrollWheelZoom: false,
-          // maxBounds:bounds
-        }).setView([ctrl.panel.center_lat || 35, ctrl.panel.center_lon || -95], ctrl.panel.zoom_lvl || 5);
-        L.tileLayer(map_url || "https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw")
-          .addTo(map);
+          var map = L.map('map', {
+            minZoom: 2,
+            scrollWheelZoom: false,
+            // maxBounds:bounds
+          }).setView([ctrl.panel.center_lat || 35, ctrl.panel.center_lon || -95], ctrl.panel.zoom_lvl || 5);
+          L.tileLayer(map_url || "https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw")
+            .addTo(map);
+
+          map.on('zoomend', () => {
+
+            if (!ctrl.panel.animationPlaying) {
+              migrationLayer.play();
+              migrationLayer.setData(table_data);
+              migrationLayer.pause();
+            } else {
+              migrationLayer.setData(table_data);
+            }
+
+          });
 
 
-        map.on('zoomend', () => {
+          map.on('dragend', function () {
+            //turn off auto-fit
+            if (!ctrl.panel.animationPlaying) {
+              migrationLayer.play();
+              migrationLayer.setData(table_data);
+              migrationLayer.pause();
+            } else {
+              migrationLayer.setData(table_data);
+            }
+          })
 
-          if (!ctrl.panel.animationPlaying) {
-            migrationLayer.play();
-            migrationLayer.setData(table_data);
-            migrationLayer.pause();
-          } else {
-            migrationLayer.setData(table_data);
-          }
+          // map.setMaxBounds(map.getBounds()); 
 
-        });
+        } catch (error) {
+          console.log("MAP INITIALIZATION FAILED.");
+        }
 
 
-        map.on('dragend', function () {
-          //turn off auto-fit
-          if (!ctrl.panel.animationPlaying) {
-            migrationLayer.play();
-            migrationLayer.setData(table_data);
-            migrationLayer.pause();
-          } else {
-            migrationLayer.setData(table_data);
-          }
-        })
 
-        // map.setMaxBounds(map.getBounds()); 
 
         migrationLayer = new L.migrationLayer({
           map: map,
