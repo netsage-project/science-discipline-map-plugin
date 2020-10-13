@@ -31,6 +31,7 @@ import './js/migrationmap_leaflet.migrationlayer.js';
 
 ////// place global variables here ////
 const panelDefaults = {
+  num_lines: 10,
   dark_map_url: "https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
   light_map_url: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png",
   center_lat: 15,
@@ -56,6 +57,14 @@ const panelDefaults = {
 
 
   //table_data: [],
+  out_field_one : "Discipline", 
+  out_field_two : "To", 
+  out_field_three: "Resource", 
+  out_field_four : "Volume",
+  in_field_one : "Discipline", 
+  in_field_two : "To", 
+  in_field_three: "Resource", 
+  in_field_four : "Volume",
   to_Byte: false,
   color: {
     mode: 'spectrum',
@@ -195,13 +204,24 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
     var filteredSet = [];
     var endPointSet = [];
+    var num_lines = this.panel.num_lines;
 
     tableData.forEach(element => {
-
       var datarows = element.rows;
 
-      datarows.forEach(function (el) {
+      var valIndex = datarows[0].length - 1;
+      var sortedData = datarows.sort(function(a,b) {return b[valIndex] - a[valIndex]});
+      console.log("sorted:");
+      console.log(sortedData);
 
+      if(sortedData.length > num_lines) {
+        var filteredTopData = sortedData.slice(0, num_lines);
+      } else {
+        filteredTopData = sortedData;
+      }
+      
+
+      filteredTopData.forEach(function (el) {
         if (true) {
           var discipline_name = el[0];
 
@@ -649,7 +669,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
               valinGB = valinGB.toFixed(3);
               var formattedValue = this.getFormattedValue(existsAsSource[i].valInBytes);
               //outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].labels[1] + " </br> Value : " + valinGB + " GB</span></br></br>"
-              outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> Discipline : " + existsAsSource[i].name + "  </br> To : " + existsAsSource[i].destDisplayName + "</br> Resource : " + existsAsSource[i].destResourceDisplayName + " </br> Volume : " + formattedValue + "</span></br></br>"
+              outGoingDiv += "<span style = 'color: " + existsAsSource[i].color + "'> "+ ctrl.panel.out_field_one + ": " + existsAsSource[i].name + "  </br> " +ctrl.panel.out_field_two + ": " + existsAsSource[i].destDisplayName + "</br>" + ctrl.panel.out_field_three + ": " + existsAsSource[i].destResourceDisplayName + " </br>" + ctrl.panel.out_field_four + ": " + formattedValue + "</span></br></br>"
 
             }
 
@@ -678,8 +698,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
                 var formattedValue = this.getFormattedValue(existsAsDest[i].valInBytes);
 
                 //incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'> Discipline : " + existsAsDest[i].name + "  </br> From : " + existsAsDest[i].labels[0] + "</br>Value : " + valinGB + " GB</span></br></br>"
-                incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'> Discipline : " + existsAsDest[i].name + "  </br> From : " + existsAsDest[i].labels[0] + "</br> Resource : " + existsAsDest[i].srcResourceName + "</br>Volume : " + formattedValue + "</span></br></br>"
-
+                incomingDiv += "<span style = 'color: " + existsAsDest[i].color + "'>"+ ctrl.panel.in_field_one + ": " + existsAsDest[i].name + "  </br>"+ ctrl.panel.in_field_two + ": " + existsAsDest[i].labels[0] + "</br>" + ctrl.panel.in_field_three+ ": " + existsAsDest[i].srcResourceName + "</br>"+ ctrl.panel.in_field_four + ": " + formattedValue + "</span></br></br>"
               }
 
             }
