@@ -268,9 +268,27 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
 
         var element = filteredSet[i].values[j];
-        if (element.length > 6) {
+        if(element.length > 10) {
+            var obj = {};
+            obj.name = element[0];
+            obj.name2 = element[1]; // add
+            obj.from = [element[5], element[4]]; // coordinates
+            obj.to = [element[7], element[8]]; // coordinates
+            obj.labels = [element[2], element[6]]; 
+            obj.color = color;
+            obj.value = 1;
+            obj.valInBytes = element[10];
+            obj.srcResourceName = element[3];
+            obj.destResourceName = element[7];
+            obj.destResourceDisplayName = element[7];
+            obj.destDisplayName = element[6];
+  
+            console.log("Color is " + color + " with index " + i);
+            table_data.push(obj);
+        } else if (element.length == 10) {
           var obj = {};
           obj.name = element[0];
+          obj.name2 = '';
           obj.from = [element[4], element[3]];
           obj.to = [element[8], element[7]];
           obj.labels = [element[1], element[5]];
@@ -585,7 +603,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
         //var customPopup = "<h2 class = 'custom' style = 'color:" + element.color + "'> Discipline : " + element.name + " </h2></br><h3>Source : " + element.labels[0] + "</h2><br/><h3>Destination : " + element.labels[1] + " </h2></br><h3 class = 'custom'> Value : " + element.valInBytes + " Bytes </h3>"
         //var customPopup2 = "<h2 class = 'custom' style = 'color:" + element.color + "'> Discipline : " + element.name + " </h2></br><h3>Source : " + element.labels[0] + "</h2><br/><h3>Destination : " + element.labels[1] + " </h2></br><h3 class = 'custom'> Value : " + element.valInBytes + " Bytes </h3>"
 
-        var legendInfo = { name: element.name, color: element.color }
+        var legendInfo = { name: element.name, name2: element.name2, color: element.color }
         legendDivData.push(legendInfo);
         var SrcMarkerInfo = { placeName: element.labels[0], latlong: [element.from[1], element.from[0]] };
         var DestMarkerInfo = { placeName: element.labels[1], latlong: [element.to[1], element.to[0]] };
@@ -599,7 +617,7 @@ export class NetsageMigrationMap extends MetricsPanelCtrl {
 
       var filteredData = Array.from(new Set(legendDivData.map(JSON.stringify))).map(JSON.parse);
       filteredData.forEach(element => {
-        var lineToAdd = '<span class = "legendItem" style= "color: ' + element.color + ';">' + element.name + '</span></br>';
+        var lineToAdd = '<span class = "legendItem" style= "color: ' + element.color + ';">' + element.name + ' - ' + element.name2 + '</span></br>';
         legendDiv.innerHTML += lineToAdd;
       });
 
