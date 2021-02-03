@@ -1,26 +1,26 @@
 <div class="section gf-form-group">
     <h4 class="section-heading">Options</h4>
     <div class="gf-form" style="display: block">
-        <label class="gf-form-label width-8">Number of Lines to Draw</label>
-        <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.num_lines" ng-change="ctrl.render()"><br />
+        <label class="gf-form-label">Number of Lines to Draw</label>
+        <input type="text" class="gf-form-input" ng-model="ctrl.panel.num_lines" ng-change="ctrl.render()"><br />
 
-        <label class="gf-form-label width-8">Dark Map URL</label>
-        <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.dark_map_url"
+        <label class="gf-form-label">Dark Map URL</label>
+        <input type="text" class="gf-form-input" ng-model="ctrl.panel.dark_map_url"
             ng-change="ctrl.render()"><br/>
 
-        <label class="gf-form-label width-8">Light Map URL</label>
-        <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.light_map_url"
+        <label class="gf-form-label">Light Map URL</label>
+        <input type="text" class="gf-form-input" ng-model="ctrl.panel.light_map_url"
             ng-change="ctrl.render()"><br/>
 
-        <label class="gf-form-label width-8">Center Lat</label>
-        <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.center_lat" ng-change="ctrl.render()"><br/>
+        <label class="gf-form-label">Center Lat</label>
+        <input type="text" class="gf-form-input" ng-model="ctrl.panel.center_lat" ng-change="ctrl.render()"><br/>
 
-        <label class="gf-form-label width-8">Center Lon</label>
-        <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.center_lon"
+        <label class="gf-form-label">Center Lon</label>
+        <input type="text" class="gf-form-input" ng-model="ctrl.panel.center_lon"
             ng-change="ctrl.render()"><br />
 
-        <label class="gf-form-label width-8">Zoom Level</label>
-        <input type="number" min="0" class="gf-form-input width-4" ng-model="ctrl.panel.zoom_lvl"
+        <label class="gf-form-label">Zoom Level</label>
+        <input type="number" min="0" class="gf-form-input" ng-model="ctrl.panel.zoom_lvl"
             ng-change="ctrl.render()"><br />
 
         <!-- <gf-form-switch class="gf-form" label-class="width-14" label="Dark Mode" checked="ctrl.panel.dark_mode"
@@ -35,51 +35,45 @@
 
     <h4 class="section-heading">Tooltip Options</h4>
     <h5 class="section-heading">Outgoing</h5>
+    <br/>
     <div class="gf-form" style="display: block">
         <div>
-            <label class="gf-form-label width-8">Field one </label>
-            <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.out_field_one"
-                ng-change="ctrl.render()"><br/>
+            <label class="gf-form-label">Field one </label>
+            <input type="text" class="gf-form-input" ng-model="ctrl.panel.out_field_one"><br/>
         </div>
         <div>
-            <label class="gf-form-label width-8">Field two </label>
-            <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.out_field_two"
-                ng-change="ctrl.render()"><br/>
+            <label class="gf-form-label">Field two </label>
+            <input type="text" class="gf-form-input " ng-model="ctrl.panel.out_field_two"><br/>
         </div>
         <div>
-            <label class="gf-form-label width-8">Field three </label>
-            <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.out_field_three"
-                ng-change="ctrl.render()"><br/>
+            <label class="gf-form-label ">Field three </label>
+            <input type="text" class="gf-form-input" ng-model="ctrl.panel.out_field_three"><br/>
         </div>
         <div>
-            <label class="gf-form-label width-8">Field four</label>
-            <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.out_field_four"
-                ng-change="ctrl.render()"><br/>
+            <label class="gf-form-label">Field four</label>
+            <input type="text" class="gf-form-input" ng-model="ctrl.panel.out_field_four"><br/>
         </div>
 
     </div>
 
     <h5 class="section-heading">Incoming</h5>
+    <br/>
     <div class="gf-form" style="display: block">
         <div>
-            <label class="gf-form-label width-8">Field one </label>
-            <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.in_field_one"
-                ng-change="ctrl.render()"><br/>
+            <label class="gf-form-label">Field one </label>
+            <input type="text" class="gf-form-input" ng-model="ctrl.panel.in_field_one"><br/>
         </div>
         <div>
-            <label class="gf-form-label width-8">Field two </label>
-            <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.in_field_two"
-                ng-change="ctrl.render()"><br/>
+            <label class="gf-form-label">Field two </label>
+            <input type="text" class="gf-form-input" ng-model="ctrl.panel.in_field_two"><br/>
         </div>
         <div>
-            <label class="gf-form-label width-8">Field three </label>
-            <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.in_field_three"
-                ng-change="ctrl.render()"><br/>
+            <label class="gf-form-label">Field three </label>
+            <input type="text" class="gf-form-input" ng-model="ctrl.panel.in_field_three"><br/>
         </div>
         <div>
-            <label class="gf-form-label width-8">Field four </label>
-            <input type="text" class="gf-form-input width-8" ng-model="ctrl.panel.in_field_four"
-                ng-change="ctrl.render()"><br/>
+            <label class="gf-form-label">Field four </label>
+            <input type="text" class="gf-form-input " ng-model="ctrl.panel.in_field_four"><br/>
         </div>
 
     </div>
