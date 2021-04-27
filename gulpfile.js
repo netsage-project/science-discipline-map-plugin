@@ -238,32 +238,24 @@ var buildDocs = function (options) {
 
 };
 
-//sample to include extra tasks
-var _sampleExtraTask = function () {
-    //gulp.src("./node_modules/cesium/Build/Cesium/**", { base: './node_modules/cesium/Build/Cesium/' }).pipe(gulp.dest('./dist/vendors/cesium/'));
-    console.log("running sample extra task");
-};
 //hack to copy images
 var _copyImages = function () {
     gulp.src("./src/**", { base: './src/' }).pipe(gulp.dest('./dist/src/'));
 };
 
 // build the documentation
-gulp.task('_generate_yui_api_docs', _generateYuiAPIDocs);
-gulp.task('_apply_bootstrap_api_doc_theme', ['_generate_yui_api_docs'], _applyBootstrapAPIDocTheme);
-gulp.task('_apply_custom_api_doc_theme', ['_apply_bootstrap_api_doc_theme'], _applyCustomAPIDocTheme);
-gulp.task('docs', ['_apply_custom_api_doc_theme'], function () {
+gulp.series('_generate_yui_api_docs', _generateYuiAPIDocs);
+gulp.series('_apply_bootstrap_api_doc_theme', ['_generate_yui_api_docs'], _applyBootstrapAPIDocTheme);
+gulp.series('_apply_custom_api_doc_theme', ['_apply_bootstrap_api_doc_theme'], _applyCustomAPIDocTheme);
+gulp.series('docs', ['_apply_custom_api_doc_theme'], function () {
     buildDocs();
 });
 
-gulp.task('_sample_extra_task', function () {
-    _sampleExtraTask();
-});
-gulp.task('_copy_images', function () {
+gulp.series('_copy_images', function () {
     _copyImages();
 });
 // Starts our development workflow
-gulp.task('default', ['_sample_extra_task', '_copy_images'], function () {
+gulp.series('default', ['_sample_extra_task', '_copy_images'], function () {
     //_copyCesium();
     buildAll({
         dev: true
@@ -271,7 +263,7 @@ gulp.task('default', ['_sample_extra_task', '_copy_images'], function () {
 });
 
 // Builds our minified production rollups
-gulp.task('deploy', ['_sample_extra_task', '_copy_images', 'docs'], function () {
+gulp.series('deploy', ['_sample_extra_task', '_copy_images', 'docs'], function () {
     //_copyCesium();
     buildAll();
     buildAll({ dev: true });
