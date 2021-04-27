@@ -32,7 +32,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-execute": "~0.2.2",
     "grunt-systemjs-builder": "^0.2.5",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-babel": "^7.0.0",
     "gulp-callback": "^0.0.3",
     "gulp-concat": "^2.3.4",
@@ -56,7 +56,8 @@
     "yuidoc-bootstrap-theme": "^1.0.6"
   },
   "dependencies": {
-    "lodash": "~4.0.0",
-    "d3": "^3.5.17"
+    "d3": "^3.5.17",
+    "gulp-cli": "^2.3.0",
+    "lodash": "~4.0.0"
   }
 }

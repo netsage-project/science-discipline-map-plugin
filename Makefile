@@ -21,7 +21,6 @@ PREV_DOT_NAME = $(shell echo "$(PREV_FULL_NAME)" | tr ' ' '.')
 PREV_NOSPACE_NAME = $(shell echo "$(PREV_FULL_NAME)" | tr -d ' ')
 PREV_UNDERSCORE_NAME = $(shell echo "$(PREV_FULL_NAME)" | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
 PREV_NAME = $(shell echo "$(PREV_FULL_NAME)" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
-#NAME = netsage-boilerplate
 VERSION = 1.0.2
 
 FILES =
