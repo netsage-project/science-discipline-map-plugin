@@ -1,4 +1,4 @@
-dist/
+# dist/ need this for signed plugins
 node_modules/
 package-lock.json
 yarn.lock

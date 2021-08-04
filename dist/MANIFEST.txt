@@ -1,0 +1,66 @@
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+{
+  "manifestVersion": "2.0.0",
+  "signatureType": "private",
+  "signedByOrg": "netsage",
+  "signedByOrgName": "netsage",
+  "rootUrls": [
+    "https://dashboard.stardust.es.net/",
+    "http://localhost:3000/",
+    "http://localhost:3002/"
+  ],
+  "plugin": "netsage-migrationmap",
+  "version": "0.0.2",
+  "time": 1628106981526,
+  "keyId": "7e4d0c6a708866e7",
+  "files": {
+    "netsage_migrationmap.js": "455318f095d8650d9af143c25b6da00d1db220ef7f07d8c67127391b70c03540",
+    "scale.js.map": "b937f1ab6c511a569d33354e7a7796877532e97963d5e3137cc70c905e59b1c4",
+    "css/migrationmap_styles.css": "dbd7cae4c0f59bc674a120869840d9327f3928289d733af0179d6a0a53a890e9",
+    "module.html": "de051723c52a15a24654f3389dad58f7789ebce1758f225298e640f6ba28c066",
+    "js/migrationmap_d3.v3.js": "0b9ad369568af2b7ec8b056435b62150b7d38d48b0d09587d5fbd9f3647cf1d0",
+    "js/migrationmap_leaflet.js": "2f23a7ab99b0783fff3f25740fe6d51e5b4d1614bc25c223b081d38f8d069b0b",
+    "js/migrationmap_leaflet.migrationlayer.js": "9de3902a65c8b2cc6d5c7cfd45c999d5510ad10055a543d7b9da6994656ee3aa",
+    "js/migrationmap_d3-tip.js": "20ace5f53ff6d6790082cc183084db8781c1720cc2e2f4445d42a7d5ee68a09b",
+    "js/migrationmap_sankey.js": "95e1b3c0a53e0d2c3abb98e1edfbf6e0ea143c7cdf33f39a6b40792510449a75",
+    "CustomHover.js": "54c033f8b48e0a0510ba387368747badea7a50a9906903f2bd93ff4e9555f510",
+    "editor.html": "d77f34c27dbcb3afd406507884b0586376c70da3a879bbc403e58312151fd55b",
+    "module.js.map": "12059ab92abd8bba2ca1ebe7ee80d5f028a4758e2e850ae8a7e3c13c1ec06090",
+    "display_editor.html": "ed5de1e2bd732a58f3c7dba29364675663b39168216248f4615067562f944f8e",
+    "plugin.json": "f640dcbf5bd5855175809a2b3b17a818ba9f703f57d03f11995f8699b26483cf",
+    "module.js": "1f4aa4a1957965903f9bb67bbb29087616f0023a03b85b2275bbe1dbde6048d4",
+    "netsage_migrationmap.js.map": "b2e6c55591d45a9db16785ccf7cee36371cbdd247aaca2ad54e86c39588042c9",
+    "scale.js": "eb97ee4f5f6cb27655fbcae336bea15264986b9372d7d5a10ca73654eed0489e",
+    "CustomHover.js.map": "5705f80b89fa19eca361c2bbe7d635535b40c0e2594dc2c810f2e2170379b1b1",
+    "src/netsage_migrationmap.js": "b96e49461758db01f98348800268c0807ddad1b9c975c0948c4e08728de76ae0",
+    "src/css/styles.css": "fa22444f8f6281fe7a4e261a91f7c1384633857175e4b26fe4c8c1502867489b",
+    "src/css/leaflet.css": "4873060989924f8e92a321a0a38611ffd0252b5bdfddf7fce00abdc8ae2176a3",
+    "src/images/boilerplate_atlas_logo.png": "f33288d397b36c3e384759627d6a426888244d026cb3c1918277c7138e022fd1",
+    "src/images/boilerplate_atlas_logo_60o.png": "0fb43a9f589e3a68ca3acdea40802cb87fdf8a65602be97d4d2b6a2c8802e899",
+    "src/images/netsage_logo.svg": "846c1780979f46d2173a1f2058968ce9848e662ffca086dc9e1e9d4e2e2cacf0",
+    "src/module.html": "de051723c52a15a24654f3389dad58f7789ebce1758f225298e640f6ba28c066",
+    "src/js/index/leaflet.js": "c40c27fc5759fbd9e3679e697c481ded760fd6299b7449ac8a41820ad7af5563",
+    "src/js/index/d3.v3.js": "81f43003a3e5919b0ba96bb86d4e215cfadb4eace2c66d01e4c76f04b23e39ab",
+    "src/js/index/sankey.js": "23a7fbead012910396d96285828f92812aeea92662da169e0f73b8406ba26f4a",
+    "src/js/index/d3-tip.js": "f5c4e340c69821a48d310dbc0dbf70f31e82ef93ea4c424536e8f60ac34b6ec0",
+    "src/js/index/leaflet.migrationLayer.js": "1f56d6368279869f109ac1028f4f4a8072d41788986e7d2a97e8b7b811f86755",
+    "src/CustomHover.js": "97bbad019ca1ae8a29d421be326f507f1f1c76b30a7ecc90551ed6ec913e2b0f",
+    "src/editor.html": "d77f34c27dbcb3afd406507884b0586376c70da3a879bbc403e58312151fd55b",
+    "src/display_editor.html": "ed5de1e2bd732a58f3c7dba29364675663b39168216248f4615067562f944f8e",
+    "src/module.js": "2f466ef7508c15023b82ac2197f28e5da38519be7256f98c131af8df7e154469",
+    "src/scale.js": "9bcb74ff93d6b1006dfa489b1806d1a00b0948bc219340490c70813c6a7a1e91"
+  }
+}
+-----BEGIN PGP SIGNATURE-----
+Version: OpenPGP.js v4.10.1
+Comment: https://openpgpjs.org
+
+wqEEARMKAAYFAmEK8OUACgkQfk0ManCIZuePWwII5b0IdBAcuTiHhEe6ytPi
+fC0ZtVACmg2mptcjEtoUQRM5Pj8SW5EPClTOKM4GUkLF/Fp/dpFP0r0arq1Q
+fdzU4hgCCQGA0OT6wmqKzbc450AZHkVn8HxHwI/jelPnPaNfUGeAuXagTi10
+TuPQtnC8Tk/eIuhygXbxkFKfp137z1orADIiQg==
+=icmE
+-----END PGP SIGNATURE-----
