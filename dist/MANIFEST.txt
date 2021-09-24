@@ -10,11 +10,12 @@ Hash: SHA512
   "rootUrls": [
     "https://dashboard.stardust.es.net/",
     "http://localhost:3000/",
-    "http://localhost:3002/"
+    "http://localhost:3002/",
+    "https://public.stardust.es.net/"
   ],
   "plugin": "netsage-migrationmap",
   "version": "0.0.2",
-  "time": 1628106981526,
+  "time": 1632507027605,
   "keyId": "7e4d0c6a708866e7",
   "files": {
     "netsage_migrationmap.js": "455318f095d8650d9af143c25b6da00d1db220ef7f07d8c67127391b70c03540",
@@ -58,9 +59,9 @@ Hash: SHA512
 Version: OpenPGP.js v4.10.1
 Comment: https://openpgpjs.org
 
-wqEEARMKAAYFAmEK8OUACgkQfk0ManCIZuePWwII5b0IdBAcuTiHhEe6ytPi
-fC0ZtVACmg2mptcjEtoUQRM5Pj8SW5EPClTOKM4GUkLF/Fp/dpFP0r0arq1Q
-fdzU4hgCCQGA0OT6wmqKzbc450AZHkVn8HxHwI/jelPnPaNfUGeAuXagTi10
-TuPQtnC8Tk/eIuhygXbxkFKfp137z1orADIiQg==
-=icmE
+wqEEARMKAAYFAmFOFJMACgkQfk0ManCIZudo5wIIzxFpIh8mtw7ZzOJaZXmY
+9vIQDiICKV5EWT6+9kLrUuO6XIvNxBwFxg6tVQdIEPYTVd9BA2fSJzUy2DBq
+vJ8wku4CCQGUVTaNAJ9y3hsiYp6cu6EltLEfp3yYioMPXuZp+eJlD+04r4i3
+TicTWj/+z+Cm2Oscq+7aLwSOFw9iQpWWaCkZMw==
+=OkV9
 -----END PGP SIGNATURE-----
